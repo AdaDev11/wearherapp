@@ -4,8 +4,15 @@ import { useState } from 'react';
 
 const Weather = () => {
 
+
+    const mas = {}
+
     const [search, setSearch] = useState("");
-    const [weather, setWeather] = useState({});
+    const [weather, setWeather] = useState(mas);
+
+
+    const loc = weather.location;
+    const cur = weather.current;
 
     const api = {
         key: '168f1f84e4d3423f951100651240709',
@@ -24,24 +31,24 @@ const Weather = () => {
             });
     }
     return (
-        <div className='app'>
+       <div className='app'>
             <div className='container'>
                 <div className='iconsDiv'>
                     <h1 className='weatherApp'>Wearher App</h1>
                     <div className='aboutsDiv'>
                         <div className='iconWeather'>
-                            <h1>{weather.location.name}</h1>
-                            <h1>{weather.location.region}</h1>
+                            <h1>{loc?.name}</h1>
+                            <h1>{loc?.region}</h1>
                         </div>
                         <div className='timeGradus'>
-                            <div className='time'>{weather.location.localtime}</div>
+                            <div className='time'>{loc?.localtime}</div>
                         </div>
                     </div>
                 </div>
                 <div className='aboutDiv'>
                     <div className='aboutWeatherIcon'>
-                        <h1>{weather.location.name}</h1>
-                        <img src={weather.current.condition.icon} alt='' />
+                        <h1>{loc?.name}</h1>
+                        <img src={cur?.condition.icon} alt='' />
                     </div>
 
                     <div className='weatherFunctions'>
@@ -55,11 +62,11 @@ const Weather = () => {
                         </div>
                         <br/> <br/>
                         <div className='humidityDiv'>
-                            <h1>Gradus: {weather.current.heatindex_c}</h1>
-                            <h4>Humidity: {weather.current.humidity}</h4>
+                            <h1>Gradus: {cur?.heatindex_c}</h1>
+                            <h4>Humidity: {cur?.humidity}</h4>
                         </div>
                         <div className='speedDiv'>
-                            <h4>Speed: {weather.current.vis_km} </h4>
+                            <h4>Speed: {cur?.vis_km} </h4>
                         </div>
                         <br />
 
