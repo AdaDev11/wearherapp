@@ -14,22 +14,29 @@ const Weather = () => {
     const loc = weather.location;
     const cur = weather.current;
 
-    const api = {
-        key: '168f1f84e4d3423f951100651240709',
-        base: 'https://api.weatherapi.com/v1/current.json'
-    };
-    const searchCity = () => {
-        console.log(search);
-        fetch(`${api.base}?key=${api.key}&q=${search}&aqi=yes`)
-            .then((res) => res.json())
-            .then((result) => {
-                setWeather(result);
-                console.log(result);
-            })
-            .catch(error => {
-                console.error("Error fetching weather data:", error);
-            });
-    }
+ const api = {
+    key: '168f1f84e4d3423f951100651240709',
+    base: 'https://api.weatherapi.com/v1/current.json'
+};
+    
+   const searchCity = () => {
+    console.log(`Fetching weather data for: ${search}`);
+    fetch(`${api.base}?key=${api.key}&q=${search}&aqi=yes`)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then((result) => {
+            setWeather(result);
+            console.log(result);
+        })
+        .catch(error => {
+            console.error("Error fetching weather data:", error);
+        });
+};
+
     return (
        <div className='app'>
             <div className='container'>
