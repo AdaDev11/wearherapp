@@ -16,7 +16,7 @@ const Weather = () => {
 
     const api = {
         key: '168f1f84e4d3423f951100651240709',
-        base: 'http://api.weatherapi.com/v1/current.json'
+        base: 'https://api.weatherapi.com/v1/current.json'
     };
     const searchCity = () => {
         console.log(search);
