@@ -1,38 +1,88 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Weather.css */
+.app {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f4f8; /* Soft light gray background */
+  font-family: Arial, sans-serif;
 }
 
-.App-link {
-  color: #61dafb;
+.container {
+  width: 90%;
+  max-width: 600px;
+  background: #ffffff; /* White background for the card */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.inputSearch {
+  position: relative;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff; /* Change border color on focus */
+}
+
+.suggestions {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  z-index: 10;
+}
+
+.suggestions ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions-list {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-list:hover {
+  background-color: #f1f1f1; /* Highlight suggestion on hover */
+}
+
+.weather-card {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card h1 {
+  margin: 0;
+  color: #333;
+}
+
+.weather-card h2 {
+  color: #007bff; /* Primary color for temperature */
+}
+
+.weather-card p {
+  color: #666;
+}
+
+.weather-card img {
+  width: 100px;
+  height: 100px;
 }
