@@ -1,87 +1,102 @@
-import React from 'react';
-import './Weather.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import './App.css';
 
 const Weather = () => {
+  const [search, setSearch] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
-
-    const mas = {}
-
-    const [search, setSearch] = useState("");
-    const [weather, setWeather] = useState(mas);
-
-
-    const loc = weather.location;
-    const cur = weather.current;
-
- const api = {
+  const api = {
     key: '168f1f84e4d3423f951100651240709',
-    base: 'https://api.weatherapi.com/v1/current.json'
-};
-    
-   const searchCity = () => {
-    console.log(`Fetching weather data for: ${search}`);
-    fetch(`${api.base}?key=${api.key}&q=${search}&aqi=yes`)
+    base: 'https://api.weatherapi.com/v1/current.json',
+  };
+
+  const fetchWeather = (cityName) => {
+    fetch(`${api.base}?key=${api.key}&q=${cityName}&aqi=yes`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((result) => {
+        setWeather(result);
+        setSearch('');
+        setSuggestions([]);
+      })
+      .catch((error) => {
+        console.error('Error fetching weather data:', error);
+      });
+  };
+
+  const fetchCitySuggestions = (value) => {
+    if (value.length > 0) {
+      fetch(`${api.base}?key=${api.key}&q=${value}&aqi=no`)
         .then((res) => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
         })
         .then((result) => {
-            setWeather(result);
-            console.log(result);
+          const city = result.location.name;
+          setSuggestions([city]);
         })
-        .catch(error => {
-            console.error("Error fetching weather data:", error);
+        .catch((error) => {
+          console.error('Error fetching city suggestions:', error);
         });
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const onInputChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    fetchCitySuggestions(value);
+  };
+
+  return (
+    <div className="app">
+      <div className="container">
+        <div className="inputSearch">
+          <input
+            type="text"
+            placeholder="Enter city/town"
+            value={search}
+            onChange={onInputChange}
+          />
+          <div className="suggestions">
+            {suggestions.length > 0 && (
+              <ul>
+                {suggestions.map((city, index) => (
+                  <li key={index} onClick={() => fetchWeather(city)}>
+                    {city}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {weather && (
+          <div className="weatherInfo">
+            <h1>{weather.location.name}</h1>
+            <h1>{weather.location.region}</h1>
+
+            <h2>{weather.current.temp_c}°C</h2>
+            <p>{weather.current.condition.text}</p>
+            <img
+              src={weather.current.condition.icon}
+              alt={weather.current.condition.text}
+            />
+            <p>Humidity: {weather.current.humidity}%</p>
+            <p>Wind Speed: {weather.current.wind_kph} kph</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-    return (
-       <div className='app'>
-            <div className='container'>
-                <div className='iconsDiv'>
-                    <h1 className='weatherApp'>Wearher App</h1>
-                    <div className='aboutsDiv'>
-                        <div className='iconWeather'>
-                            <h1>{loc?.name}</h1>
-                            <h1>{loc?.region}</h1>
-                        </div>
-                        <div className='timeGradus'>
-                            <div className='time'>{loc?.localtime}</div>
-                        </div>
-                    </div>
-                </div>
-                <div className='aboutDiv'>
-                    <div className='aboutWeatherIcon'>
-                        <h1>{loc?.name}</h1>
-                        <img src={cur?.condition.icon} alt='' />
-                    </div>
-
-                    <div className='weatherFunctions'>
-                        <div className='inputSearch'>
-                            <input
-                                type='text'
-                                placeholder='Enter city/town'
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <button onClick={searchCity}>Search</button>
-                        </div>
-                        <br/> <br/>
-                        <div className='humidityDiv'>
-                            <h1>Gradus: {cur?.heatindex_c}</h1>
-                            <h4>Humidity: {cur?.humidity}</h4>
-                        </div>
-                        <div className='speedDiv'>
-                            <h4>Speed: {cur?.vis_km} </h4>
-                        </div>
-                        <br />
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export default Weather
+export default Weather;
